@@ -5,10 +5,25 @@
       <p><strong>部件名称：</strong>{{ result.partName }}</p>
       <p><strong>检测时间：</strong>{{ result.detectTime }}</p>
       <p><strong>检测结果：</strong>{{ result.result }}</p>
-      <div class="image-section" v-if="result.markedImage">
-        <p><strong>标注对比图：</strong></p>
-        <img :src="result.markedImage" alt="标注图" style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;" />
+      <div class="image-container" v-if="result.imagePath || result.markedImage">
+        <div class="image-section" v-if="result.imagePath">
+          <p><strong>原图：</strong></p>
+          <img
+              :src="result.imagePath"
+              alt="原图"
+              class="image-side"
+          />
+        </div>
+        <div class="image-section" v-if="result.markedImage">
+          <p><strong>标注对比图：</strong></p>
+          <img
+              :src="result.markedImage"
+              alt="标注图"
+              class="image-side"
+          />
+        </div>
       </div>
+
 
       <button class="back-btn" @click="goBack">⬅ 返回历史记录</button>
     </div>
@@ -128,4 +143,30 @@ export default {
   pointer-events: none;
   user-select: none;
 }
+.image-container {
+  display: flex;
+  gap: 20px; /* 图片间距 */
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.image-section {
+  flex: 1; /* 两边等分 */
+  text-align: center;
+}
+
+.image-section p {
+  color: #00eaff;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.image-side {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 234, 255, 0.3);
+}
+
 </style>

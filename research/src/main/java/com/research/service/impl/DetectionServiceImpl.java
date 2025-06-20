@@ -129,7 +129,7 @@ public class DetectionServiceImpl implements DetectionService {
             record.setDetectTime(LocalDateTime.now());
             record.setResult(analysisText);
             record.setConfidence(contentJson != null && contentJson.has("confidence") ? contentJson.get("confidence").asDouble() : 0.0);
-            record.setImagePath("data:imageBase64");
+            record.setImagePath(base64Image);
             record.setMarkedImage(markedImageBase64);
             DetectionRecord saved = detectionRecordRepository.save(record);
 
@@ -211,7 +211,7 @@ public class DetectionServiceImpl implements DetectionService {
         record.setDetectTime(LocalDateTime.now());
         record.setResult(analysisText);
         record.setConfidence(confidence);
-        record.setImagePath("/upload/" + uploadedImage.getFilename());
+        record.setImagePath(base64Image);
         record.setMarkedImage(markedImageBase64);
 
         DetectionRecord saved = detectionRecordRepository.save(record);
