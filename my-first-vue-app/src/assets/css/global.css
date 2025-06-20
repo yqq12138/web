@@ -1,0 +1,64 @@
+/* src/assets/global.css */
+
+/* 设置全局字体、背景色 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    background: linear-gradient(to right, #3a1c71, #d76d77, #ffaf7b); /* 蓝紫橙渐变 */
+    color: #ffffff;
+}
+
+/* 通用容器样式 */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 通用按钮样式 */
+button {
+    background-color: #6a11cb;
+    background-image: linear-gradient(315deg, #6a11cb 0%, #2575fc 74%);
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* 输入框美化 */
+input {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 12px;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 300px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #6a11cb66;
+}
+
+/* 标题样式 */
+h1, h2, h3 {
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
