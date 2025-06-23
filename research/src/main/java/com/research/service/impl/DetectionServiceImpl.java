@@ -1,8 +1,6 @@
 package com.research.service.impl;
 
 import com.research.model.DetectionRecord;
-import com.research.model.UploadedImage;
-import com.research.repository.UploadedImageRepository;
 import com.research.service.DetectionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.research.repository.DetectionRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+import java.util.HashMap;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -34,8 +32,7 @@ public class DetectionServiceImpl implements DetectionService {
 
     @Autowired
     private DetectionRecordRepository detectionRecordRepository;
-    @Autowired
-    private UploadedImageRepository uploadedImageRepository;
+
 
     @Value("${qianfan.apiUrl}")
     private String apiUrl;
@@ -46,8 +43,7 @@ public class DetectionServiceImpl implements DetectionService {
     @Value("${qianfan.modelName}")
     private String modelName;
 
-    @Value("${upload.dir}")
-    private String uploadDir;
+    private final String uploadDir = "upload";
 
     private ObjectMapper objectMapper;
 
@@ -165,8 +161,8 @@ public class DetectionServiceImpl implements DetectionService {
     @Override
     public DetectionRecord analyzeImage(MultipartFile file, String text) throws Exception {
         // 先保存图片，获取UploadedImage，包含Base64和路径
-        UploadedImage uploadedImage = saveUploadedImage(file);
-        String base64Image = uploadedImage.getPath();
+        Map<String, String> uploadedImage = saveUploadedImage(file);
+        String base64Image = uploadedImage.get("path");
 
         // 构造请求数据并发送请求，解析返回
         String requestPayload = buildRequestPayload(text == null ? "" : text, base64Image);
@@ -215,7 +211,6 @@ public class DetectionServiceImpl implements DetectionService {
         record.setMarkedImage(markedImageBase64);
 
         DetectionRecord saved = detectionRecordRepository.save(record);
-        System.out.println("保存成功，记录ID：" + saved.getId());
 
         return record;
     }
@@ -363,8 +358,8 @@ public class DetectionServiceImpl implements DetectionService {
 
         return "data:image/png;base64," + base64Out;
     }
-    @Transactional
-    public UploadedImage saveUploadedImage(MultipartFile file) throws IOException {
+
+    public Map<String, String> saveUploadedImage(MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String ext = getFileExtension(originalFilename);
         String uuid = UUID.randomUUID().toString();
@@ -381,15 +376,13 @@ public class DetectionServiceImpl implements DetectionService {
         // 编码为 Base64
         String base64 = encodeFileToBase64(destFile);
 
-        UploadedImage uploadedImage = new UploadedImage();
-        uploadedImage.setFilename(newFilename);
-        uploadedImage.setPath(base64);
+        Map<String, String> result = new HashMap<>();
+        result.put("filename", newFilename);
+        result.put("path", base64);
 
-        // 存库（如需）
-        uploadedImageRepository.save(uploadedImage);
-
-        return uploadedImage;
+        return result;
     }
+
 
 
 
